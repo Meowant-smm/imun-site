@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delegate Hub | IMUN 2027</title>
+    <meta name="description"
+        content="IMUN 2027 Delegate Hub — Everything you need to represent your country with confidence. Learn about SoP, GSL, Caucuses, and Resolutions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-bg: #0A0F1E;
+            --bg-surface: #0e1322;
+            --bg-surface-low: #161b2b;
+            --bg-surface-high: #25293a;
+            --charcoal: #141820;
+            --gold: #C9A84C;
+            --gold-hover: #B8860B;
+            --gold-light: #ffe08f;
+            --text-primary: #F0EDE6;
+            --text-secondary: #A9A9A9;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', 'DM Sans', sans-serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--primary-bg);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Background texture */
+        .bg-texture {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: -1;
+            background-image:
+                radial-gradient(circle at 15% 50%, rgba(201, 168, 76, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(201, 168, 76, 0.04) 0%, transparent 50%);
+        }
+
+        .bg-texture::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><path d="M0 0 L100 100 M100 0 L0 100" stroke="rgba(201,168,76,0.02)" stroke-width="0.5" fill="none"/></svg>');
+            background-size: 200px 200px;
+            opacity: 0.5;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            line-height: 1.2;
+            color: var(--text-primary);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Navbar */
+        nav {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            padding: 24px 5%;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(10, 15, 30, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+        }
+
+        .nav-logo {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: var(--gold);
+        }
+
+        .back-link {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back-link:hover {
+            color: var(--gold);
+        }
+
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Hero */
+        .hub-hero {
+            text-align: center;
+            padding: 100px 5% 80px;
+            background: radial-gradient(circle at center top, rgba(37, 41, 58, 0.4) 0%, transparent 60%);
+        }
+
+        .hub-hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            letter-spacing: -0.02em;
+            background: linear-gradient(to bottom right, #ffffff, var(--gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 16px;
+        }
+
+        .hub-hero p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Card Grid */
+        .hub-section {
+            padding: 0 5% 120px;
+            flex: 1;
+        }
+
+        .card-grid {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+        }
+
+        /* Individual Card */
+        .hub-card {
+            background: rgba(22, 27, 43, 0.55);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(77, 70, 55, 0.15);
+            border-radius: 6px;
+            padding: 48px 36px;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hub-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gold), var(--gold-light));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .hub-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4), 0 0 20px rgba(201, 168, 76, 0.08);
+            border-color: rgba(201, 168, 76, 0.3);
+        }
+
+        .hub-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 16px;
+            padding: 4px 12px;
+            background: rgba(201, 168, 76, 0.1);
+            border-radius: 4px;
+        }
+
+        .hub-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .hub-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .card-arrow {
+            position: absolute;
+            bottom: 24px;
+            right: 24px;
+            color: rgba(201, 168, 76, 0.3);
+            font-size: 1.5rem;
+            transition: var(--transition-smooth);
+        }
+
+        .hub-card:hover .card-arrow {
+            color: var(--gold);
+            transform: translateX(4px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-surface-low);
+            padding: 40px 5%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: rgba(169, 169, 169, 0.4);
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10, 15, 30, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-box {
+            background: var(--bg-surface-low);
+            border: 1px solid rgba(201, 168, 76, 0.25);
+            border-radius: 6px;
+            padding: 48px;
+            width: 100%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(20px) scale(0.97);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+        }
+
+        .modal-overlay.active .modal-box {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            color: var(--text-secondary);
+            font-size: 1.8rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.3s;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            color: var(--gold);
+        }
+
+        .modal-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 16px;
+            padding: 4px 12px;
+            background: rgba(201, 168, 76, 0.1);
+            border-radius: 4px;
+        }
+
+        .modal-box h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 24px;
+            line-height: 1.3;
+        }
+
+        .modal-box h4 {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 32px 0 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+        }
+
+        .modal-box p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            margin-bottom: 16px;
+        }
+
+        .modal-box ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 16px;
+        }
+
+        .modal-box ul li {
+            color: var(--text-secondary);
+            padding: 6px 0 6px 20px;
+            position: relative;
+            font-size: 0.95rem;
+        }
+
+        .modal-box ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+        }
+
+        .example-block {
+            background: rgba(9, 14, 28, 0.8);
+            border-left: 3px solid var(--gold);
+            padding: 24px;
+            border-radius: 0 6px 6px 0;
+            margin-top: 12px;
+        }
+
+        .example-block .example-title {
+            font-family: var(--font-heading);
+            font-size: 0.95rem;
+            color: var(--gold);
+            margin-bottom: 4px;
+        }
+
+        .example-block .example-country {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .example-block p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-style: italic;
+            margin-bottom: 0;
+        }
+
+        /* Scrollbar */
+        .modal-box::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal-box::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal-box::-webkit-scrollbar-thumb {
+            background: rgba(201, 168, 76, 0.3);
+            border-radius: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .hub-hero {
+                padding: 80px 5% 60px;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-box {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="bg-texture"></div>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="index.html" class="nav-logo">IMUN</a>
+        <a href="index.html" class="back-link">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Back to Main Site
+        </a>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hub-hero">
+        <h1>Delegate Hub</h1>
+        <p>Everything you need to represent your country with confidence</p>
+    </section>
+
+    <!-- Cards Grid -->
+    <section class="hub-section">
+        <div class="card-grid">
+
+            <!-- SoP Card -->
+            <div class="hub-card" data-modal="sop">
+                <span class="card-tag">Preparation</span>
+                <h3>Statement of Position</h3>
+                <p>Your country's official stance on the agenda</p>
+                <span class="card-arrow">→</span>
+            </div>
+
+            <!-- GSL Card -->
+            <div class="hub-card" data-modal="gsl">
+                <span class="card-tag">Speaking</span>
+                <h3>General Speakers List</h3>
+                <p>Your opening address to the committee</p>
+                <span class="card-arrow">→</span>
+            </div>
+
+            <!-- Unmod CoC Card -->
+            <div class="hub-card" data-modal="unmod">
+                <span class="card-tag">Caucus</span>
+                <h3>Unmoderated Caucus</h3>
+                <p>Informal negotiation and bloc building time</p>
+                <span class="card-arrow">→</span>
+            </div>
+
+            <!-- Mod CoC Card -->
+            <div class="hub-card" data-modal="mod">
+                <span class="card-tag">Caucus</span>
+                <h3>Moderated Caucus</h3>
+                <p>Focused thematic debate within committee</p>
+                <span class="card-arrow">→</span>
+            </div>
+
+            <!-- ROI Card -->
+            <div class="hub-card" data-modal="roi">
+                <span class="card-tag">Documentation</span>
+                <h3>Resolution & Operative Items</h3>
+                <p>The formal output document of your committee</p>
+                <span class="card-arrow">→</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>&copy; 2027 IMUN. All rights reserved.</footer>
+
+    <!-- ========== MODALS ========== -->
+
+    <!-- SoP Modal -->
+    <div class="modal-overlay" id="modal-sop">
+        <div class="modal-box">
+            <button class="modal-close">&times;</button>
+            <span class="modal-tag">Preparation</span>
+            <h2>Statement of Position (SoP)</h2>
+            <p>A Statement of Position is a formal written document submitted before committee sessions. It outlines
+                your country's official stance on the agenda topic, relevant national policies, and proposed solutions.
+            </p>
+
+            <h4>Structure</h4>
+            <ul>
+                <li>Country name and committee</li>
+                <li>Country's position on the topic</li>
+                <li>Past actions taken by the country</li>
+                <li>Proposed solutions and calls to action</li>
+            </ul>
+
+            <h4>Example</h4>
+            <div class="example-block">
+                <div class="example-title">SoP — UNSC — Climate Security</div>
+                <div class="example-country">Federal Republic of Germany</div>
+                <p>The Federal Republic of Germany firmly believes that climate change poses an existential threat to
+                    global peace and security. Germany has committed to achieving carbon neutrality by 2045 and calls
+                    upon all member states to adopt binding emissions reduction targets. Germany proposes the
+                    establishment of a UN Climate Security Task Force to monitor climate-induced conflict zones and
+                    coordinate humanitarian response.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- GSL Modal -->
+    <div class="modal-overlay" id="modal-gsl">
+        <div class="modal-box">
+            <button class="modal-close">&times;</button>
+            <span class="modal-tag">Speaking</span>
+            <h2>General Speakers List (GSL)</h2>
+            <p>The General Speakers List is the primary speaking order in committee. Delegates deliver a formal speech
+                (typically 60–90 seconds) outlining their country's position on the agenda topic.</p>
+
+            <h4>Tips</h4>
+            <ul>
+                <li>State your country's position clearly in the first 15 seconds</li>
+                <li>Reference real national policies or past UN resolutions</li>
+                <li>End with a call to action or proposal</li>
+            </ul>
+
+            <h4>Example</h4>
+            <div class="example-block">
+                <div class="example-title">GSL Speech — UNHRC — Freedom of Press</div>
+                <div class="example-country">Kingdom of Norway</div>
+                <p>Honourable Chair, distinguished delegates — The Kingdom of Norway stands unwavering in its commitment
+                    to press freedom as a fundamental human right. Norway ranks consistently among the top nations in
+                    the World Press Freedom Index and urges this committee to adopt a binding resolution mandating
+                    independent media protection mechanisms in all member states. Norway calls upon delegates to move
+                    beyond rhetoric and commit to enforceable international standards. Thank you.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unmod CoC Modal -->
+    <div class="modal-overlay" id="modal-unmod">
+        <div class="modal-box">
+            <button class="modal-close">&times;</button>
+            <span class="modal-tag">Caucus</span>
+            <h2>Unmoderated Caucus</h2>
+            <p>An Unmoderated Caucus is an informal recess from formal committee proceedings. Delegates move freely
+                around the room to negotiate, build blocs, draft working papers, and form coalitions.</p>
+
+            <h4>How to Motion</h4>
+            <p>Motion for an Unmoderated Caucus of [X] minutes for the purpose of [bloc building / working paper
+                drafting / informal debate].</p>
+
+            <h4>Tips</h4>
+            <ul>
+                <li>Use this time to find allies with similar positions</li>
+                <li>Begin drafting working papers or resolutions</li>
+                <li>Approach opposing blocs to find compromise language</li>
+            </ul>
+
+            <h4>Example Motion</h4>
+            <div class="example-block">
+                <div class="example-title">Motion for Unmoderated Caucus</div>
+                <p>The delegate of Brazil moves for an Unmoderated Caucus of 15 minutes for the purpose of working paper
+                    drafting.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mod CoC Modal -->
+    <div class="modal-overlay" id="modal-mod">
+        <div class="modal-box">
+            <button class="modal-close">&times;</button>
+            <span class="modal-tag">Caucus</span>
+            <h2>Moderated Caucus</h2>
+            <p>A Moderated Caucus is a structured, topic-specific debate within the committee. The Chair calls on
+                delegates individually. Speaking times are shorter than GSL — typically 30–45 seconds.</p>
+
+            <h4>How to Motion</h4>
+            <p>Motion for a Moderated Caucus of [total time] with [speaking time] per delegate on the topic of [specific
+                subtopic].</p>
+
+            <h4>Tips</h4>
+            <ul>
+                <li>Pick a narrow, focused subtopic</li>
+                <li>Use it to steer debate toward your bloc's agenda</li>
+                <li>Keep speeches punchy and directive</li>
+            </ul>
+
+            <h4>Example Motion</h4>
+            <div class="example-block">
+                <div class="example-title">Motion for Moderated Caucus</div>
+                <p>The delegate of India moves for a Moderated Caucus of 10 minutes with 45 seconds per delegate on the
+                    topic of funding mechanisms for climate adaptation in developing nations.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ROI Modal -->
+    <div class="modal-overlay" id="modal-roi">
+        <div class="modal-box">
+            <button class="modal-close">&times;</button>
+            <span class="modal-tag">Documentation</span>
+            <h2>Resolution & Operative Items</h2>
+            <p>A Resolution is the final formal document passed by the committee. It contains Preambulatory Clauses
+                (context and background) and Operative Clauses (binding or recommending actions).</p>
+
+            <h4>Preambulatory Clauses</h4>
+            <p>Set the context. Begin with words like: <em>Recalling, Recognizing, Affirming, Deeply concerned, Noting
+                    with appreciation</em></p>
+            <div class="example-block" style="margin-bottom: 24px;">
+                <p>Recalling United Nations Security Council Resolution 1325 on Women, Peace and Security,</p>
+            </div>
+
+            <h4>Operative Clauses</h4>
+            <p>State the actions. Begin with words like: <em>Urges, Calls upon, Encourages, Decides, Requests,
+                    Condemns</em></p>
+            <div class="example-block" style="margin-bottom: 24px;">
+                <p>Urges all member states to allocate a minimum of 2% of their national defence budgets toward conflict
+                    prevention and peacebuilding initiatives;</p>
+            </div>
+
+            <h4>Full Example — UNGA — Cybersecurity</h4>
+            <div class="example-block">
+                <div class="example-title">Operative Clause</div>
+                <p>Calls upon all member states to establish national cybersecurity agencies with clear mandates to
+                    protect critical infrastructure, and further requests the Secretary-General to submit a report on
+                    best practices in cyber governance by the next General Assembly session;</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Card → Modal
+        document.querySelectorAll('.hub-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const modalId = 'modal-' + card.dataset.modal;
+                document.getElementById(modalId).classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close modals
+        document.querySelectorAll('.modal-close').forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.closest('.modal-overlay').classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Click overlay to close
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        // Escape key to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.modal-overlay.active').forEach(m => {
+                    m.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
