@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=DM+Sans:wght@400;500;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
     <style>
         :root {
@@ -24,8 +24,8 @@
             --gold-light: #ffe08f;
             --text-primary: #F0EDE6;
             --text-secondary: #A9A9A9;
-            --font-heading: 'Playfair Display', serif;
-            --font-body: 'Inter', 'DM Sans', sans-serif;
+            --font-heading: "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            --font-body: "Futura", "Trebuchet MS", Arial, sans-serif;
             --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
@@ -36,7 +36,7 @@
         }
 
         body {
-            background-color: var(--primary-bg);
+            background-color: #023859;
             color: var(--text-primary);
             font-family: var(--font-body);
             line-height: 1.6;
@@ -44,6 +44,33 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+        }
+
+        * {
+            cursor: none !important;
+        }
+
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 32px;
+            height: 32px;
+            pointer-events: none;
+            z-index: 999999;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg transform='rotate(90 12 12)'%3E%3Cpath fill='%2349769F' stroke='%23ffffff' stroke-width='1.5' d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            will-change: transform;
+            transition: width 0.2s, height 0.2s;
+            margin-top: -2px;
+            margin-left: -2px;
+        }
+
+        .custom-cursor.hammer {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg transform='rotate(-90 12 12)'%3E%3Cpath fill='%2349769F' stroke='%23ffffff' stroke-width='1.5' d='M21.71 5.29a1 1 0 0 0-1.42 0l-1.41 1.42-3.59-3.59a1 1 0 0 0-1.41 0L12 4.93a1 1 0 0 0 0 1.41l1.41 1.41L4.12 17.05a3 3 0 1 0 4.24 4.24l9.3-9.3 1.41 1.41a1 1 0 0 0 1.42 0l1.81-1.81a1 1 0 0 0 0-1.41z'/%3E%3C/g%3E%3C/svg%3E");
+            width: 36px;
+            height: 36px;
         }
 
         /* Background texture */
@@ -76,7 +103,7 @@
         h5,
         h6 {
             font-family: var(--font-heading);
-            font-weight: 600;
+            font-weight: 900;
             line-height: 1.2;
             color: var(--text-primary);
         }
@@ -89,17 +116,21 @@
         /* Navbar */
         nav {
             position: sticky;
-            top: 0;
-            width: 100%;
-            padding: 24px 5%;
+            top: 24px;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 16px 32px;
             z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(10, 15, 30, 0.92);
+            background: linear-gradient(to right, #141E30, #35577D);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .nav-logo {
@@ -132,7 +163,7 @@
         /* Hero */
         .hub-hero {
             text-align: center;
-            padding: 100px 5% 80px;
+            padding: 160px 5% 80px;
             background: radial-gradient(circle at center top, rgba(37, 41, 58, 0.4) 0%, transparent 60%);
         }
 
@@ -141,6 +172,7 @@
             letter-spacing: -0.02em;
             background: linear-gradient(to bottom right, #ffffff, var(--gold));
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 16px;
         }
@@ -172,7 +204,7 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(77, 70, 55, 0.15);
-            border-radius: 6px;
+            border-radius: 16px;
             padding: 48px 36px;
             cursor: pointer;
             transition: var(--transition-smooth);
@@ -278,7 +310,7 @@
         .modal-box {
             background: var(--bg-surface-low);
             border: 1px solid rgba(201, 168, 76, 0.25);
-            border-radius: 6px;
+            border-radius: 16px;
             padding: 48px;
             width: 100%;
             max-width: 700px;
@@ -372,7 +404,7 @@
             background: rgba(9, 14, 28, 0.8);
             border-left: 3px solid var(--gold);
             padding: 24px;
-            border-radius: 0 6px 6px 0;
+            border-radius: 0 16px 16px 0;
             margin-top: 12px;
         }
 
@@ -690,6 +722,37 @@
                 });
             }
         });
+        // Cursor Latency Logic
+        const cursorDiv = document.createElement('div');
+        cursorDiv.classList.add('custom-cursor');
+        document.body.appendChild(cursorDiv);
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let cursorX = mouseX;
+        let cursorY = mouseY;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.closest('a, button, select, input, .btn, .committee-row, .faq-question, .modal-close, .hub-card, .contact-number, [role="button"]')) {
+                cursorDiv.classList.add('hammer');
+            } else {
+                cursorDiv.classList.remove('hammer');
+            }
+        });
+
+        function animateCursor() {
+            const ease = 0.20;
+            cursorX += (mouseX - cursorX) * ease;
+            cursorY += (mouseY - cursorY) * ease;
+            cursorDiv.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
     </script>
 </body>
 

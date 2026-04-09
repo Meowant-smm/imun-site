@@ -9,8 +9,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&family=DM+Sans:wght@400;500;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet">
+    <!-- Interactive Dependencies -->
+    <script src="https://unpkg.com/three"></script>
+    <script src="https://unpkg.com/globe.gl"></script>
     <style>
         :root {
             /* Color Palette */
@@ -30,8 +33,8 @@
             /* Light Grey */
 
             /* Typography */
-            --font-heading: 'Playfair Display', serif;
-            --font-body: 'Inter', 'DM Sans', sans-serif;
+            --font-heading: "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            --font-body: "Futura", "Trebuchet MS", Arial, sans-serif;
 
             /* Transitions */
             --transition-smooth: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -45,12 +48,41 @@
         }
 
         body {
-            background-color: var(--primary-bg);
+            background: linear-gradient(180deg, #131E30 0%, #35577D 100%);
+            background-attachment: fixed;
             color: var(--text-primary);
             font-family: var(--font-body);
             line-height: 1.6;
             overflow-x: hidden;
             position: relative;
+            min-height: 100vh;
+        }
+
+        * {
+            cursor: none !important;
+        }
+
+        .custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 32px;
+            height: 32px;
+            pointer-events: none;
+            z-index: 999999;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg transform='rotate(90 12 12)'%3E%3Cpath fill='%2349769F' stroke='%23ffffff' stroke-width='1.5' d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            will-change: transform;
+            transition: width 0.2s, height 0.2s;
+            margin-top: -2px;
+            margin-left: -2px;
+        }
+
+        .custom-cursor.hammer {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg transform='rotate(-90 12 12)'%3E%3Cpath fill='%2349769F' stroke='%23ffffff' stroke-width='1.5' d='M21.71 5.29a1 1 0 0 0-1.42 0l-1.41 1.42-3.59-3.59a1 1 0 0 0-1.41 0L12 4.93a1 1 0 0 0 0 1.41l1.41 1.41L4.12 17.05a3 3 0 1 0 4.24 4.24l9.3-9.3 1.41 1.41a1 1 0 0 0 1.42 0l1.81-1.81a1 1 0 0 0 0-1.41z'/%3E%3C/g%3E%3C/svg%3E");
+            width: 36px;
+            height: 36px;
         }
 
         /* Background Texture */
@@ -84,7 +116,7 @@
         h5,
         h6 {
             font-family: var(--font-heading);
-            font-weight: 600;
+            font-weight: 900;
             line-height: 1.2;
             color: var(--text-primary);
         }
@@ -101,7 +133,7 @@
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 2px solid rgba(201, 168, 76, 0.0);
             transition: var(--transition-smooth);
-            border-radius: 6px;
+            border-radius: 16px;
         }
 
         .glass-card:hover {
@@ -129,7 +161,7 @@
             font-weight: 500;
             font-size: 1.05rem;
             cursor: pointer;
-            border-radius: 4px;
+            border-radius: 50px;
             transition: var(--transition-smooth);
             text-align: center;
         }
@@ -166,21 +198,29 @@
         /* Navbar */
         nav {
             position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 24px 5%;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 1200px;
+            padding: 16px 32px;
             z-index: 100;
             display: flex;
             justify-content: space-between;
             align-items: center;
             transition: var(--transition-smooth);
+            background: linear-gradient(to right, #141E30, #35577D);
+            border-radius: 50px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         nav.scrolled {
-            background: rgba(10, 15, 30, 0.9);
+            background: linear-gradient(to right, rgba(20, 30, 48, 0.95), rgba(53, 87, 125, 0.95));
             backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(201, 168, 76, 0.15);
-            padding: 16px 5%;
+            border: 1px solid rgba(201, 168, 76, 0.15);
+            padding: 12px 32px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
         }
 
         .nav-logo {
@@ -232,13 +272,14 @@
             justify-content: center;
             text-align: center;
             padding-top: 140px;
-            background: radial-gradient(circle at top, rgba(37, 41, 58, 0.4) 0%, transparent 60%);
+            background: transparent;
         }
 
         .hero-content {
             max-width: 900px;
             position: relative;
             z-index: 2;
+            margin-top: 100px;
         }
 
         .hero h1 {
@@ -270,7 +311,7 @@
             background: rgba(22, 27, 43, 0.4);
             backdrop-filter: blur(10px);
             padding: 24px 32px;
-            border-radius: 4px;
+            border-radius: 16px;
             border: 1px solid rgba(201, 168, 76, 0.1);
             min-width: 120px;
         }
@@ -292,14 +333,22 @@
 
         /* About Section */
         #about {
-            background-color: rgba(9, 14, 28, 0.5);
+            background-color: transparent;
         }
 
         .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
             align-items: center;
+            gap: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-text {
+            flex: 1 1 400px;
+            max-width: 500px;
         }
 
         .about-text h2 {
@@ -316,22 +365,12 @@
 
         .about-image {
             position: relative;
-            height: 500px;
-            border-radius: 4px;
-            background: linear-gradient(45deg, var(--charcoal), var(--bg-surface-low));
-            border: 1px solid rgba(201, 168, 76, 0.1);
-            overflow: hidden;
+            height: 450px;
+            flex: 1 1 400px;
+            max-width: 450px;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        .about-image::before {
-            content: "Global Dialogue";
-            font-family: var(--font-heading);
-            font-size: 2rem;
-            color: rgba(201, 168, 76, 0.3);
-            text-align: center;
         }
 
         /* Committees Section */
@@ -362,7 +401,7 @@
             padding: 28px 36px;
             background: var(--bg-surface-low);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
+            border-radius: 16px;
             margin-bottom: 16px;
             cursor: pointer;
             transition: var(--transition-smooth);
@@ -424,7 +463,7 @@
         .faq-accordion .faq-item {
             background: var(--bg-surface-low);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 4px;
+            border-radius: 16px;
             margin-bottom: 16px;
             overflow: hidden;
         }
@@ -482,6 +521,7 @@
             text-align: center;
             border-top: 1px solid rgba(255, 255, 255, 0.05);
             margin-top: 64px;
+            border-radius: 24px;
         }
 
         .footer-logo {
@@ -505,7 +545,7 @@
             color: var(--text-primary);
             border: 1px solid rgba(201, 168, 76, 0.3);
             padding: 8px 24px;
-            border-radius: 4px;
+            border-radius: 50px;
         }
 
         .copyright {
@@ -542,7 +582,7 @@
         .modal-box {
             background: var(--bg-surface-low);
             border: 1px solid rgba(201, 168, 76, 0.3);
-            border-radius: 4px;
+            border-radius: 16px;
             padding: 48px;
             width: 100%;
             max-width: 500px;
@@ -689,7 +729,8 @@
             }
 
             .about-grid {
-                grid-template-columns: 1fr;
+                flex-direction: column;
+                gap: 40px;
             }
 
             .countdown {
@@ -774,8 +815,8 @@
                     challenging them to negotiate, collaborate, and formulate resolutions that stand the test of time.
                 </p>
             </div>
-            <div class="about-image">
-                <!-- Decorative placeholder -->
+            <div id="globeViz" class="about-image">
+                <!-- Globe will render here -->
             </div>
         </div>
     </section>
@@ -1139,6 +1180,79 @@
             }
         });
 
+        // Cursor Latency Logic
+        const cursorDiv = document.createElement('div');
+        cursorDiv.classList.add('custom-cursor');
+        document.body.appendChild(cursorDiv);
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let cursorX = mouseX;
+        let cursorY = mouseY;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        document.addEventListener('mouseover', (e) => {
+            if (e.target.closest('a, button, select, input, .btn, .committee-row, .faq-question, .modal-close, .hub-card, .contact-number, [role="button"]')) {
+                cursorDiv.classList.add('hammer');
+            } else {
+                cursorDiv.classList.remove('hammer');
+            }
+        });
+
+        function animateCursor() {
+            const ease = 0.20;
+            cursorX += (mouseX - cursorX) * ease;
+            cursorY += (mouseY - cursorY) * ease;
+            cursorDiv.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0)`;
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // 3D Globe Initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            const arcsData = [...Array(20).keys()].map(() => ({
+                startLat: (Math.random() - 0.5) * 180,
+                startLng: (Math.random() - 0.5) * 360,
+                endLat: (Math.random() - 0.5) * 180,
+                endLng: (Math.random() - 0.5) * 360,
+                color: ['#ffffff', '#82cae3', '#4b98c4', '#c9e6f2'][Math.floor(Math.random() * 4)]
+            }));
+
+            const globeContainer = document.getElementById('globeViz');
+
+            const world = Globe()
+                (globeContainer)
+                .globeImageUrl('//unpkg.com/three-globe/example/img/earth-night.jpg')
+                .backgroundColor('rgba(0,0,0,0)')
+                .arcsData(arcsData)
+                .arcColor('color')
+                .arcDashLength(0.4)
+                .arcDashGap(0.2)
+                .arcDashAnimateTime(1500)
+                .arcStroke(0.7)
+                .showAtmosphere(true)
+                .atmosphereColor('#82cae3')
+                .atmosphereAltitude(0.15)
+                .width(globeContainer.clientWidth)
+                .height(globeContainer.clientHeight);
+
+            world.controls().autoRotate = true;
+            world.controls().autoRotateSpeed = 1.3;
+            world.controls().enableZoom = false;
+
+            // Responsive Globe
+            const resizeObserver = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    world.width(entry.contentRect.width);
+                    world.height(entry.contentRect.height);
+                }
+            });
+            resizeObserver.observe(globeContainer);
+        });
     </script>
 </body>
 
